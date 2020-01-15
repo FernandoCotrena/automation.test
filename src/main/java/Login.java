@@ -1,4 +1,5 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -18,14 +19,7 @@ public class Login {
     public void tearDown() {
         driver.quit();
     }
-
-    @Test
-    public void logout() {
-        login();
-        driver.findElement(By.id("user-container")).click();
-        driver.findElement(By.linkText("Cerrar sesión")).click();
-    }
-
+    
     @Test
     public void login() {
         driver.get("https://www.lavoz.com.ar/");
@@ -34,5 +28,17 @@ public class Login {
         driver.findElement(By.id("email")).sendKeys("fernandocotrena@gmail.com");
         driver.findElement(By.id("password")).sendKeys("Sawueso123");
         driver.findElement(By.cssSelector(".has-primary")).click();
+
+        Assert.assertEquals(driver.findElement(By.id("user-name")).getText(), "Sawueso");
+
     }
+
+    @Test
+    public void logout() {
+        login();
+        driver.findElement(By.id("user-container")).click();
+        driver.findElement(By.linkText("Cerrar sesión")).click();
+        Assert.assertEquals( "https://www.lavoz.com.ar/",driver.getCurrentUrl());
+    }
+
 }
